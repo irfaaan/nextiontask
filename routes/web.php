@@ -30,6 +30,9 @@ Route::middleware('auth')->group(function () {
 
     //REST API routes
     Route::get('home', [RestApiController::class, 'index'])->name('home');
+    Route::get('edit/{id}', [RestApiController::class, 'edit'])->name('edit');
+    Route::get('update/{id}', [RestApiController::class, 'update'])->name('update');
+    Route::get('destroy/{id}', [RestApiController::class, 'destroy'])->name('destroy');
 
 });
 

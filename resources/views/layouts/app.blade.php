@@ -26,7 +26,18 @@
                     </div>
                 </header>
             @endif
+            <!-- Display success or error messages -->
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <!-- Page Content -->
             <main>
                 {{ $slot }}

@@ -12,7 +12,7 @@ class RestApiController extends Controller
     public function index()
     {
         if (Auth::user()->hasVerifiedEmail()) {
-            $response = Http::get('https://jsonplaceholder.org/posts');
+            $response = Http::get('https://jsonplaceholder.typicode.com/posts');
             $data = $response->json();
 
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -23,6 +23,41 @@ class RestApiController extends Controller
                 'home']);
 
             return view('restApi.index', compact('paginatedData'));
+        }
+        return redirect('/dashboard');
+    }
+    public function edit($id)
+
+    {
+        $response = Http::get('https://jsonplaceholder.typicode.com/posts/' . $id);
+        $data = $response->json();
+        return view('restApi.edit',compact('data'));
+
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $response = Http::put('https://jsonplaceholder.typicode.com/posts/' . $id, [
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
+        ]);
+
+        if ($response->successful()) {
+            return redirect()->route('home')->with('success', 'Updated successfully!');
+        } else {
+            return redirect()->route('home')->with('error', 'Failed to update. Please try again.');
+        }
+    }
+
+    public function destroy($id)
+    {
+        $response = Http::delete('https://jsonplaceholder.typicode.com/posts/' . $id);
+
+        if ($response->successful()) {
+            return redirect()->route('home')->with('success', 'Deleted successfully!');
+        } else {
+            return redirect()->route('home')->with('error', 'Failed to delete. Please try again.');
         }
     }
 }
